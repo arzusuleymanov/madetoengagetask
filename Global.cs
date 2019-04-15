@@ -36,6 +36,9 @@ namespace MadeToEngageTasks
 
             [Display(Name = "Specialized", Order = 7)]
             public const string Specialized = "Specialized";
+
+            [Display(Name = "Specialized", Order = 8)]
+            public const string Event = "Event";
         }
 
         /// <summary>

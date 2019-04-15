@@ -8,10 +8,11 @@ using EPiServer.Core;
 using EPiServer.Filters;
 using EPiServer.Shell.Configuration;
 using EPiServer.Web;
+using EPiServer.ServiceLocation;
 
 namespace MadeToEngageTasks.Business
 {
-    public class ContentLocator
+    public class ContentLocator : IContentLocator
     {
         private readonly IContentLoader _contentLoader;
         private readonly IContentProviderManager _providerManager;
@@ -109,6 +110,12 @@ namespace MadeToEngageTasks.Business
             }
 
             return _contentLoader.GetChildren<ContactPage>(contactsRootPageLink).OrderBy(p => p.PageName);
+        }
+
+        public IEnumerable<EventPage> GetEventPages(ContentReference parent)
+        {
+            var eventsRootPageLink = _contentLoader.Get<StartPage>(SiteDefinition.Current.StartPage).EventPageLink;
+            return _contentLoader.GetChildren<EventPage>(eventsRootPageLink).OrderBy(x => x.StartDate);
         }
     }
 }
