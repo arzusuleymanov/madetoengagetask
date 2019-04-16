@@ -470,7 +470,7 @@
     <Content Include="Views\ContactBlock\Index.cshtml" />
     <Content Include="Views\ArticlePage\Index.cshtml" />
     <Content Include="Views\EventPage\Index.cshtml" />
-    <Content Include="Views\EventListPage\Index.cshtml" />
+    <Content Include="Views\EventListingPage\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

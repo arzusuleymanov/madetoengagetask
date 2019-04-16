@@ -14,6 +14,7 @@ namespace MadeToEngageTasks.Business.Initialization
         public void ConfigureContainer(ServiceConfigurationContext context)
         {
             //Implementations for custom interfaces can be registered here.
+            context.Services.AddTransient<IContentLocator, ContentLocator>();
 
             context.ConfigurationComplete += (o, e) =>
             {

@@ -17,9 +17,8 @@ namespace MadeToEngageTasks.Controllers
 
         public ActionResult Index(EventListingPage currentPage)
         {
-            var model = new EventListingViewModel(currentPage);
-            // TODO:
-            //model.AllEvents = _contentLocator.GetEventPages();
+            var model = new EventListingViewModel(currentPage);           
+            model.AllEvents = _contentLocator.GetEventPages(currentPage.ContentLink);
 
             return View(model);
         }

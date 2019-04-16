@@ -114,8 +114,8 @@ namespace MadeToEngageTasks.Business
 
         public IEnumerable<EventPage> GetEventPages(ContentReference parent)
         {
-            var eventsRootPageLink = _contentLoader.Get<StartPage>(SiteDefinition.Current.StartPage).EventPageLink;
-            return _contentLoader.GetChildren<EventPage>(eventsRootPageLink).OrderBy(x => x.StartDate);
+            var events = _contentLoader.GetChildren<EventPage>(parent).OrderBy(x => x.StartDate);
+            return events;
         }
     }
 }

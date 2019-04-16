@@ -49,8 +49,5 @@ namespace MadeToEngageTasks.Models.Pages
 
         [Display(GroupName = Global.GroupNames.SiteSettings)]
         public virtual SiteLogotypeBlock SiteLogotype { get; set; }
-
-        [Display(GroupName = Global.GroupNames.Event)]
-        public virtual PageReference EventPageLink { get; set; }
     }
 }

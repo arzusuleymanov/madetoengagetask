@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
+using EPiServer.Shell.ObjectEditing;
 using EPiServer.Web;
 
 namespace MadeToEngageTasks.Models.Pages
@@ -13,7 +15,7 @@ namespace MadeToEngageTasks.Models.Pages
     {
         [Display(
             Name = "Summary",
-            GroupName = SystemTabNames.Content,
+            GroupName = Global.GroupNames.Content,
             Order = 1)]
         [UIHint(UIHint.Textarea)]
         public virtual string Summary { get; set; }
@@ -21,7 +23,7 @@ namespace MadeToEngageTasks.Models.Pages
 
         [Display(
             Name = "Description",
-            GroupName = SystemTabNames.Content,
+            GroupName = Global.GroupNames.Content,
             Order = 2)]
         public virtual XhtmlString Description { get; set; }
 
@@ -38,7 +40,8 @@ namespace MadeToEngageTasks.Models.Pages
            Name = "Speaker",
            GroupName = Global.GroupNames.Event,
            Order = 4)]
-        [SpecialSpeaker]
+        //[SpecialSpeaker]
+        [SelectOne(SelectionFactoryType = typeof(SpeakerSelectionAttribute))]
         public virtual string Speaker { get; set; }
 
         [Display(
@@ -70,7 +73,7 @@ namespace MadeToEngageTasks.Models.Pages
 
         [Display(
            Name = "Description",
-           GroupName = SystemTabNames.Content,
+           GroupName = Global.GroupNames.Content,
            Order = 9)]
         public virtual ContentArea AdditionalContent { get; set; }
 
@@ -78,8 +81,7 @@ namespace MadeToEngageTasks.Models.Pages
            Name = "Description",
            GroupName = Global.GroupNames.Event,
            Order = 10)]
-        [BackingType(typeof(EventStatus))]
-        public virtual EventStatus Statuses { get; set; }
+        public virtual EventStatus EvtStatus { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -98,6 +100,7 @@ namespace MadeToEngageTasks.Models.Pages
         Unknown, Closed
     }
 
+    // Test validate speaker using own validation attribute
     public class SpecialSpeakerAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -111,4 +114,18 @@ namespace MadeToEngageTasks.Models.Pages
         }
     }
 
+    // Epi Way
+    public class SpeakerSelectionAttribute : ISelectionFactory
+    {
+        public IEnumerable<ISelectItem> GetSelections(ExtendedMetadata metadata)
+        {
+            return new ISelectItem[]
+            {
+               new SelectItem() { Text = "Scott Allen"},
+               new SelectItem() { Text = "Damien Edwards"},
+               new SelectItem() { Text = "David Fowler"},
+               new SelectItem() { Text = "Scott Guthrie"}
+            };
+        }        
+    }
 }

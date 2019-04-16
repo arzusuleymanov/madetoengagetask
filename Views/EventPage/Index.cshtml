@@ -1,12 +1,24 @@
-﻿@model MadeToEngageTasks.Models.Pages.EventPage
+﻿@using MadeToEngageTasks
+@model PageViewModel<EventPage>
 
-@Html.PropertyFor(x => x.Summary)
-@Html.PropertyFor(x => x.Description)
-@Html.PropertyFor(x => x.Title)
-@Html.PropertyFor(x => x.Speaker)
-@Html.PropertyFor(x => x.NoAttendees)
-@Html.PropertyFor(x => x.StartDate)
-@Html.PropertyFor(x => x.EndDate)
-@Html.PropertyFor(x => x.EventImage)
-@Html.PropertyFor(x => x.AdditionalContent)
-@Html.PropertyFor(x => x.Status)
+@{ Layout = "~/Views/Shared/Layouts/_LeftNavigation.cshtml"; }
+
+<h1 @Html.EditAttributes(x => x.CurrentPage.PageName)>@Model.CurrentPage.PageName</h1>
+<p class="introduction" @Html.EditAttributes(x => x.CurrentPage.MetaDescription)>@Model.CurrentPage.MetaDescription</p>
+<div class="row">
+    <div class="span8 clearfix" @Html.EditAttributes(x => x.CurrentPage.MainBody)>
+        @Html.DisplayFor(m => m.CurrentPage.MainBody)
+    </div>
+</div>
+@Html.PropertyFor(x => x.CurrentPage.MainContentArea, new { CssClass = "row", Tag = Global.ContentAreaTags.TwoThirdsWidth })
+
+@Html.PropertyFor(x => x.CurrentPage.Summary )
+@Html.PropertyFor(x => x.CurrentPage.Description )
+@Html.PropertyFor(x => x.CurrentPage.Title )
+@Html.PropertyFor(x => x.CurrentPage.Speaker )
+@Html.PropertyFor(x => x.CurrentPage.NoAttendees )
+@Html.PropertyFor(x => x.CurrentPage.StartDate )
+@Html.PropertyFor(x => x.CurrentPage.EndDate )
+@Html.PropertyFor(x => x.CurrentPage.EventImage )
+@Html.PropertyFor(x => x.CurrentPage.AdditionalContent )
+@Html.PropertyFor(x => x.CurrentPage.EvtStatus )

@@ -7,7 +7,7 @@ namespace MadeToEngageTasks.Models.ViewModels
     {
         public EventListingViewModel(EventListingPage currentPage) : base(currentPage)
         {
-        }
+        }      
 
         public IEnumerable<EventPage> AllEvents { get; set; }
     }
