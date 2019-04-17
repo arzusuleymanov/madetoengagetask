@@ -7,11 +7,14 @@ using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using EPiServer.Shell.ObjectEditing;
 using EPiServer.Web;
+using MadeToEngageTasks.Helpers;
+using EPiServer.Validation;
+using System.Linq;
 
 namespace MadeToEngageTasks.Models.Pages
 {
     [ContentType(DisplayName = "Event", GUID = "a99a35b2-b52c-4585-a93d-cf1656fe1c59", Description = "")]
-    public class EventPage : StandardPage, IValidatableObject
+    public class EventPage : StandardPage, IValidate<EventPage>
     {
         [Display(
             Name = "Summary",
@@ -55,7 +58,7 @@ namespace MadeToEngageTasks.Models.Pages
            Name = "Start Date",
            GroupName = Global.GroupNames.Event,
            Order = 6)]
-        [Required]
+        [Required]       
         public virtual DateTime StartDate { get; set; }
 
         [Display(
@@ -81,51 +84,42 @@ namespace MadeToEngageTasks.Models.Pages
            Name = "Description",
            GroupName = Global.GroupNames.Event,
            Order = 10)]
+        [BackingType(typeof(PropertyNumber))]
         public virtual EventStatus EvtStatus { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        #region Mvc way
+        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        //{ 
+        //      Should be inherited => IValidatableObject
+        //    List<ValidationResult> result = new List<ValidationResult>();
+        //    if (EndDate < StartDate)
+        //    {
+        //        ValidationResult message = new ValidationResult("End date must not before Start Date");
+        //        result.Add(message);
+        //    }
+        //    return result;
+        //}
+        #endregion
+
+        // Epi way
+        public IEnumerable<ValidationError> Validate(EventPage instance)
         {
-            List<ValidationResult> result = new List<ValidationResult>();
-            if (EndDate < StartDate)
+            if (instance.EndDate < instance.StartDate)
             {
-                ValidationResult message = new ValidationResult("End date must not before Start Date");
-                result.Add(message);
+                return new List<ValidationError>()
+                {
+                    new ValidationError()
+                    {
+                        ErrorMessage = "End date must not before Start Date",
+                        Severity = ValidationErrorSeverity.Error,
+                        ValidationType = ValidationErrorType.AttributeMatched
+                    }
+                };
             }
-            return result;
+            return Enumerable.Empty<ValidationError>();
         }
     }
+   
 
-    public enum EventStatus
-    {
-        Unknown, Closed
-    }
-
-    // Test validate speaker using own validation attribute
-    public class SpecialSpeakerAttribute : ValidationAttribute
-    {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            if (value.ToString() == "Scott Allen" || value.ToString() == "Damien Edwards" || value.ToString() == "David Fowler" || value.ToString() == "Scott Guthrie")
-            {
-                return ValidationResult.Success;
-            }
-
-            return new ValidationResult("Please enter a coorect value");
-        }
-    }
-
-    // Epi Way
-    public class SpeakerSelectionAttribute : ISelectionFactory
-    {
-        public IEnumerable<ISelectItem> GetSelections(ExtendedMetadata metadata)
-        {
-            return new ISelectItem[]
-            {
-               new SelectItem() { Text = "Scott Allen"},
-               new SelectItem() { Text = "Damien Edwards"},
-               new SelectItem() { Text = "David Fowler"},
-               new SelectItem() { Text = "Scott Guthrie"}
-            };
-        }        
-    }
+   
 }

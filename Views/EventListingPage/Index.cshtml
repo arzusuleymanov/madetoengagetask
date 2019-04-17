@@ -11,8 +11,8 @@
     <div class="span8 clearfix">
        @foreach (var item in Model.AllEvents)
        {
-           <a href="@item.LinkURL">@item.Title</a>
            <h3>@item.StartDate - @item.EndDate</h3>
+           <a href="@item.LinkURL">@item.Title</a>
            <h3>@item.Summary</h3>
        }
     </div>

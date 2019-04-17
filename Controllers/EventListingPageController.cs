@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using EPiServer.Web.Mvc;
 using MadeToEngageTasks.Business;
 using MadeToEngageTasks.Models.Pages;
@@ -18,7 +19,7 @@ namespace MadeToEngageTasks.Controllers
         public ActionResult Index(EventListingPage currentPage)
         {
             var model = new EventListingViewModel(currentPage);           
-            model.AllEvents = _contentLocator.GetEventPages(currentPage.ContentLink);
+            model.AllEvents = _contentLocator.GetEventPages(currentPage.ContentLink).ToList();
 
             return View(model);
         }
